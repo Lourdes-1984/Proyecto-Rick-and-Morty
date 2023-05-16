@@ -1,25 +1,33 @@
-import logo from './logo.svg';
 import './App.css';
+import { useEffect, useState } from 'react';
+import { getCaracteres } from './getData';
+import Footer from './Footer';
+import { CaracterList } from './CaracterList';
 
 function App() {
+  const [caracteres, setCaracteres] = useState();
+  const obtener = async (page) => await getCaracteres(page).then( resp => {
+    setCaracteres(resp.data?.results)
+  })
+  useEffect(() => {
+    obtener(2)
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <div>
+    <header>
+        <h1 className="main-title">Rick And Morty Project</h1>
+    </header>
+    <main id="characters">
+        <div id="lds-ring" className="lds-ring">
+
+        <CaracterList character={caracteres}/>
+        </div>
+    </main>
+    <Footer />
+</div>
   );
 }
 
 export default App;
+
+
